@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.Date;
 import java.util.List;
+import java.beans.Transient;
 import java.text.ParseException;
 
 import org.junit.Before;
@@ -209,5 +210,38 @@ public class TestExample {
 	for (Transaction currDisplayedTransaction : displayedTransactions) {
 	    assertEquals(categoryToFilterBy, currDisplayedTransaction.getCategory());
 	}
+    }
+
+    // second remove transaction test case
+    @Test
+    public void testRemoveUnknownTransaction(){
+        // pre-condition: list of transactions is empty
+        assertEquals(0, model.getTransactions().size());
+
+        // perform action: add transactions to list
+        controller.addTransaction(50.00, CATEGORY_FOOD);
+        controller.addTransaction(90.00, CATEGORY_ENTERTAINMENT);
+        controller.addTransaction(90.00, CATEGORY_FOOD);
+
+        // pre-condition: list only contains added transactions
+        assertEquals(3, model.getTransactions().size());
+        assertEquals(230.00, getTotalCost(), 0.01);
+
+        // perform action: create transaction to be removed
+        Transaction t = new Transaction(45.00, CATEGORY_FOOD);
+
+        // pre-condition: transaction to be removed does not exist in transaction list
+        List<Transaction> transactionsList = model.getTransactions();
+        assertEquals(false, transactionsList.contains(t));
+
+        // perform action: remove unknown transaction
+        model.removeTransaction(t);
+
+        // post-condition: list only contains added transactions
+        assertEquals(3, model.getTransactions().size());
+
+        // check total cost after removal
+        assertEquals(230.00, getTotalCost(), 0.01);
+
     }
 }
