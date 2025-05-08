@@ -66,5 +66,23 @@ public class ExpenseTrackerController {
     }
     view.displayFilteredTransactions(filteredTransactions);
   }
+
+  public void checkRemoveBtnVisible(){
+    // checks whether remove transaction is possible
+    if (view.getTransaction() == null){
+      view.disableRemoveBtn();
+    } else {
+      view.enableRemoveBtn();
+    }
+  }
+
+  public void removeTransaction(){
+    Transaction t = view.getTransaction();
+    if (t == null) return;
+    model.removeTransaction(t);
+    view.disableRemoveBtn();
+    view.getTransactionsTable().clearSelection();
+    refresh();
+  }
     
 }

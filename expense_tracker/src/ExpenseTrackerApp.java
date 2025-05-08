@@ -75,5 +75,13 @@ public class ExpenseTrackerApp {
      controller.applyFilter();
    });
     
+   view.getTransactionsTable().getSelectionModel().addListSelectionListener(e -> {
+    controller.checkRemoveBtnVisible();
+   });
+
+   view.addRemoveTransactionListener(e -> {
+     controller.removeTransaction();
+   });
+
   }
 }
